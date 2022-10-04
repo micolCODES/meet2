@@ -1,4 +1,4 @@
-# Meetapp
+# Meet
 Connect with likeminded people in your city by finding events you are interested in.
 
 ## Objectives
