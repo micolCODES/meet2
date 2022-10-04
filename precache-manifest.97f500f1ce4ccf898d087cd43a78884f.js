@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/meet/static/media/logo.5d5d9eef.svg"
   },
   {
-    "revision": "365a4000fa190b3388309813122b5504",
+    "revision": "0908a51d7eb6b920b0fb3a2f3c8190fa",
     "url": "/meet/index.html"
   }
 ];
