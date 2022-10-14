@@ -9,7 +9,7 @@ import { getEvents, extractLocations } from './api';
 
 class App extends Component {
   state = {
-    events: mockData,
+    events: [],
     locations: extractLocations(mockData)
   }
 
@@ -27,6 +27,7 @@ class App extends Component {
   componentDidMount() {
     this.mounted = true;
     getEvents().then((events) => {
+      console.log('Getting events', events);
       if (this.mounted) {
         this.setState({ events, locations: extractLocations(events) });
       }
@@ -38,13 +39,14 @@ class App extends Component {
   }
 
   render() {
+    console.log('This state', this.state)
     return (
       <div className="App">
         <h1>Meet App</h1>
         <h4>Choose your nearest city</h4>
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
-        <EventList events={this.state.events} />
         <NumberOfEvents />
+        <EventList events={this.state.events} />
     </div>
   );
 }
