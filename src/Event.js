@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import './Event.css';
+import moment from "moment";
 
 //this is my code
 // class Event extends Component {
@@ -10,7 +11,7 @@ import './Event.css';
 //     }
 //   }
 
-  
+
 //   clickHandler = () => {
 //     this.setState({isVisible: !this.state.isVisible});
 //   };
@@ -71,7 +72,7 @@ class Event extends Component {
               hide details
             </button>
           )}
-          
+
           {!showDetails && (
             <button
               className="details-btn"
