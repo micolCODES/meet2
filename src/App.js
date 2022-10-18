@@ -22,6 +22,7 @@ class App extends Component {
     
     //Micol: Get the token from localStorage
     const accessToken = localStorage.getItem('access_token');
+    console.log("AccessToken", accessToken);
 
     //Micol: Validate the accessToken if exists (true) otherwise false
     const isTokenValid = (await checkToken(accessToken)).error ? false : true;
@@ -119,6 +120,8 @@ class App extends Component {
           <div className='warningAlert'>
             <OfflineAlert text={this.state.warningText} />
           </div>
+
+          {/* city chart and pie chart */}
   
           <EventList events={this.state.events} />
         </div>
