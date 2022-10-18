@@ -11,34 +11,34 @@ const mockDataJSON = [
         "description": "Have you wondered how you can ask Google to show you the list of the top ten must-see places in London? And how Google presents you the list? How can you submit the details of an application? Well, JavaScript is doing these. :) \n\nJavascript offers interactivity to a dull, static website. Come, learn JavaScript with us and make those beautiful websites.",
         "location": "London, UK",
         "creator": {
-         "email": "fullstackwebdev@careerfoundry.com",
-         "self": true
+            "email": "fullstackwebdev@careerfoundry.com",
+            "self": true
         },
         "organizer": {
-         "email": "fullstackwebdev@careerfoundry.com",
-         "self": true
+            "email": "fullstackwebdev@careerfoundry.com",
+            "self": true
         },
         "start": {
-         "dateTime": "2020-05-19T16:00:00+02:00",
-         "timeZone": "Europe/Berlin"
+            "dateTime": "2020-05-19T16:00:00+02:00",
+            "timeZone": "Europe/Berlin"
         },
         "end": {
-         "dateTime": "2020-05-19T17:00:00+02:00",
-         "timeZone": "Europe/Berlin"
+            "dateTime": "2020-05-19T17:00:00+02:00",
+            "timeZone": "Europe/Berlin"
         },
         "recurringEventId": "4eahs9ghkhrvkld72hogu9ph3e",
         "originalStartTime": {
-         "dateTime": "2020-05-19T16:00:00+02:00",
-         "timeZone": "Europe/Berlin"
+            "dateTime": "2020-05-19T16:00:00+02:00",
+            "timeZone": "Europe/Berlin"
         },
         "iCalUID": "4eahs9ghkhrvkld72hogu9ph3e@google.com",
         "sequence": 0,
         "reminders": {
-         "useDefault": true
+            "useDefault": true
         },
         "eventType": "default"
-       },
-       {
+    },
+    {
         "kind": "calendar#event",
         "etag": "\"3181159875584000\"",
         "id": "3qtd6uscq4tsi6gc7nmmtpqlct_20200520T120000Z",
@@ -50,35 +50,35 @@ const mockDataJSON = [
         "description": "Love HTML, CSS, and JS? Want to become a cool front-end developer? \n\nReact is one of the most popular front-end frameworks. There is a huge number of job openings for React developers in most cities. \n\nJoin us in our free React training sessions and give your career a new direction. ",
         "location": "Berlin, Germany",
         "creator": {
-         "email": "fullstackwebdev@careerfoundry.com",
-         "self": true
+            "email": "fullstackwebdev@careerfoundry.com",
+            "self": true
         },
         "organizer": {
-         "email": "fullstackwebdev@careerfoundry.com",
-         "self": true
+            "email": "fullstackwebdev@careerfoundry.com",
+            "self": true
         },
         "start": {
-         "dateTime": "2020-05-20T14:00:00+02:00",
-         "timeZone": "Europe/Berlin"
+            "dateTime": "2020-05-20T14:00:00+02:00",
+            "timeZone": "Europe/Berlin"
         },
         "end": {
-         "dateTime": "2020-05-20T15:00:00+02:00",
-         "timeZone": "Europe/Berlin"
+            "dateTime": "2020-05-20T15:00:00+02:00",
+            "timeZone": "Europe/Berlin"
         },
         "recurringEventId": "3qtd6uscq4tsi6gc7nmmtpqlct",
         "originalStartTime": {
-         "dateTime": "2020-05-20T14:00:00+02:00",
-         "timeZone": "Europe/Berlin"
+            "dateTime": "2020-05-20T14:00:00+02:00",
+            "timeZone": "Europe/Berlin"
         },
         "iCalUID": "3qtd6uscq4tsi6gc7nmmtpqlct@google.com",
         "sequence": 0,
         "reminders": {
-         "useDefault": true
+            "useDefault": true
         },
         "eventType": "default"
-       }
+    }
 ];
 
-const mockData = JSON.parse(JSON.stringify(mockDataJSON));
+const events = JSON.parse(JSON.stringify(mockDataJSON));
 
-export { mockData };
+export default events;

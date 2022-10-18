@@ -1,4 +1,4 @@
-import { mockData } from './mock-data';
+import mockData from './mock-data';
 import axios from 'axios';
 import NProgress from 'nprogress';
 
@@ -34,6 +34,8 @@ export const extractLocations = (events) => {
 };
 
 export const getEvents = async (max_results = 32) => {
+  //alert(1)
+  console.log("Getting events")
   NProgress.start();
 
   if (window.location.href.startsWith("http://localhost")) {
