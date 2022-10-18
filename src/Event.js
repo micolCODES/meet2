@@ -2,42 +2,6 @@ import React, { Component } from "react";
 import './Event.css';
 import moment from "moment";
 
-//this is my code
-// class Event extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       isVisible: false,
-//     }
-//   }
-
-
-//   clickHandler = () => {
-//     this.setState({isVisible: !this.state.isVisible});
-//   };
-
-//   render() {
-//   const isVisible = this.state.isVisible;
-//   const { event } = this.props;
-
-//     return (
-//       <div className='details__outer-container'>
-//         <h2>{event.summary}</h2>
-//         <p>{event.description}</p>
-//         <button className='details__toggle' onClick={this.clickHandler}> 
-//           <span className={isVisible ? "details__toggle--show-text" : "details__toggle--show-text visible"}>Show</span>
-//           <span className={isVisible ? "details__toggle--hide-text visible" : "details__toggle--hide-text"}>Hide</span>
-//         </button>
-//         <div className={isVisible ? "details__inner-container visible" : "details__inner-container"}>
-//           <p>Location: {event.location}</p>
-//           <p>From: {event.start.dateTime}</p>
-//           <p>Until: {event.end.dateTime}</p>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
-
 // this is git
 class Event extends Component {
   state = {

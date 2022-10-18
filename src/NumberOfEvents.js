@@ -3,61 +3,50 @@ import { ErrorAlert } from "./Alert";
 
 class NumberOfEvents extends Component {
   
-    state = { numberOfEvents: 32 };
-  // this is my code
-  //   handleChange = (e) => {
-  //     const value = e.target.value;
-  //     this.setState({ numberOfEvents: value });
-  //   };
-  
-  //   render() {
-  //     return (
-  //       <div className='numberOfEvents'>
-  //         <label>
-  //           Number of Events:
-  //           <input
-  //             type='number'
-  //             className='event-number'
-  //             value={this.state.numberOfEvents}
-  //             onChange={this.handleChange}
-  //           />
-  //         </label>
-  //       </div>
-  //     );
-  //   }
-  // }
+  state = { numberOfEvents: 12 }; // Micol: I default the numberOfEvents to 12, I think its said somewhere in the exercise
 
   //this is git
   handleInputChanged = (event) => {
-    const value = event.target.value;
-    this.props.updateEvents(null, value);
-    this.setState({ numberOfEvents: value });
-
-    if (value < 1) {
-      this.setState({
-        infoText: "Select number from 1 to 32",
-      });
-    } else {
-      this.setState({
-        infoText: "",
-      });
+    let eventCount = parseInt(event.target.value)
+    if (eventCount > 0 && eventCount <= 32) {
+        this.setState({ 
+            numberOfEvents: eventCount,
+            errorText: ''
+          });
+    } else { // shows the error if the number is not between 1 and 32
+        this.setState({ 
+            numberOfEvents: 12,
+            errorText: 'Please choose a number between 1 and 32.'
+        });
+        eventCount = 12;
     }
+
+    // Micol: We call updateEvents of App.js
+    this.props.updateEvents(undefined, eventCount);
   };
 
   render() {
     const { numberOfEvents } = this.state;
     return (
-      <div className="numberOfEvents">
-        <label>Number of Events: </label>
-        <input
-          type="text"
-          id="numberOfEvents__input"
-          value={numberOfEvents}
-          onChange={this.handleInputChanged}
-        />
-        <ErrorAlert text={this.state.infoText} />
-      </div>
-    );
+      <div>            
+         <div className="numberOfEvents">             
+             <label htmlFor="number-of-events">Number of Events: </label>                                
+             {/* Micol: Instead of TextBox, we use number type with min and max set */}
+             <input
+                 type="number"
+                 className="number-of-events"
+                 min="1" 
+                 max="32"
+                 value={numberOfEvents}
+                 onChange={this.handleInputChanged}
+             />
+         </div>
+         <div className="errorAlert">
+             <ErrorAlert  text={this.state.errorText} />
+         </div>
+     </div>
+
+ )
   }
 }
 

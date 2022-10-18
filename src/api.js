@@ -5,14 +5,14 @@ import NProgress from 'nprogress';
 
 const removeQuery = () => {
   if (window.history.pushState && window.location.pathname) {
-    var newurl =
+    let newurl =
       window.location.protocol +
       "//" +
       window.location.host +
       window.location.pathname;
     window.history.pushState("", "", newurl);
   } else {
-    newurl = window.location.protocol + "//" + window.location.host;
+    let newurl = window.location.protocol + "//" + window.location.host;
     window.history.pushState("", "", newurl);
   }
 };
@@ -33,9 +33,7 @@ export const extractLocations = (events) => {
   return locations;
 };
 
-export const getEvents = async (max_results = 32) => {
-  //alert(1)
-  console.log("Getting events")
+export const getEvents = async () => {
   NProgress.start();
 
   if (window.location.href.startsWith("http://localhost")) {
@@ -43,14 +41,21 @@ export const getEvents = async (max_results = 32) => {
     return mockData;
   }
 
+  // Micol: In case if you go offline, we can use `lastEvents` from localStorage which you set down below
+  if (!navigator.onLine) {
+    const data = localStorage.getItem('lastEvents');
+    NProgress.done();
+    return data ? JSON.parse(data).events : [];
+  }
+
   const token = await getAccessToken();
 
   if (token) {
     removeQuery();
-    const url = 'https://owpshv4xb0.execute-api.eu-central-1.amazonaws.com/dev/api/get-events' + '/' + token;
+    const url = 'https://owpshv4xb0.execute-api.eu-central-1.amazonaws.com/dev/api/get-events/' + token;
     const result = await axios.get(url);
     if (result.data) {
-      var locations = extractLocations(result.data.events);
+      const locations = extractLocations(result.data.events);
       localStorage.setItem("lastEvents", JSON.stringify(result.data));
       localStorage.setItem("locations", JSON.stringify(locations));
     }
@@ -82,7 +87,7 @@ export const getAccessToken = async () => {
 const getToken = async (code) => {
   const encodeCode = encodeURIComponent(code);
   const { access_token } = await fetch(
-    'https://owpshv4xb0.execute-api.eu-central-1.amazonaws.com/dev/api/token' + '/' + encodeCode
+    'https://owpshv4xb0.execute-api.eu-central-1.amazonaws.com/dev/api/token/' + encodeCode
   )
     .then((res) => {
       return res.json();

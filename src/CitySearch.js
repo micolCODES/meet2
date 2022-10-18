@@ -9,35 +9,23 @@ class CitySearch extends Component {
     showSuggestions: false
   };
 
-  //this is my code
-  // handleInputChanged = (event) => {
-  //   const value = event.target.value;
-  //   const suggestions = this.props.locations.filter((location) => {
-  //     return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
-  //   });
-  //   this.setState({
-  //     query: value,
-  //     suggestions,
-  //   });
-  // };
-
   //this is the git
   handleInputChanged = (event) => {
     const value = event.target.value;
-    this.setState({ showSuggestions: true });
+    this.setState({showSuggestions:true});
     const suggestions = this.props.locations.filter((location) => {
       return location.toUpperCase().indexOf(value.toUpperCase()) > -1;
     });
     if (suggestions.length === 0) {
       return this.setState({
         query: value,
-        infoText: 'We can not find the city you are looking for. Please try another city',
+        infoText: 'Cannot find your City, please pick another!',
       });
     } else {
       return this.setState({
         query: value,
         suggestions,
-        infoText: ''
+        infoText:''
       });
     }
   };
@@ -54,6 +42,7 @@ class CitySearch extends Component {
 
   };
 
+  // Micol: This code looks good, so no change required
   render() {
     return (
       <div className='CitySearch'>

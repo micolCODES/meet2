@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
-import "./nprogress.css";
 import EventList from './EventList';
 import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
-import { getEvents, extractLocations } from './api';
-import { computeHeadingLevel } from '@testing-library/react';
+import { getEvents, extractLocations, checkToken, getAccessToken } from './api';
+import { OfflineAlert } from './Alert';
+import WelcomeScreen from './WelcomeScreen'; // Micol: Created a new component
 
 class App extends Component {
+  
   state = {
     events: [],
     locations: [],
@@ -18,60 +19,66 @@ class App extends Component {
 
   async componentDidMount() {
     this.mounted = true;
-    if (!navigator.onLine) {
-      this.setState({
-        warningText:
-          'You are currently using the app offline and viewing data from your last visit. Data will not be up-to-date.',
-      });
-    } else {
-      this.setState({ warningText: '' });
-    }
-    if (this.mounted) {
-      this.updateEvents();
+    
+    //Micol: Get the token from localStorage
+    const accessToken = localStorage.getItem('access_token');
+
+    //Micol: Validate the accessToken if exists (true) otherwise false
+    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
+
+    //Micol: On redirection we get Google's code in the param, so we exclude that to show Welcome Screen
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = searchParams.get("code");
+
+    //Micol: Set showWelcomeScreen to true if no code or token exists, otherwise false
+    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
+
+    //Micol: Now get events only if code & token & mounted is true
+    if ((code || isTokenValid) && this.mounted) {
+      getEvents().then((events) => {
+        if (this.mounted) {
+          this.setState({ events, locations: extractLocations(events) });
+        }
+      }); 
     }
   }
 
   // Filters events based on location and number given in user input
   updateEvents = (location, eventCount) => {
-    const { currentLocation, numberOfEvents } = this.state;
 
-    // If user selects a location from input
-    if (location) {
-      getEvents().then((response) => {
-        // Applies new filter for location
-        const locationEvents =
-          location === 'all'
-            ? response
-            : response.filter((event) => event.location === location);
-        const events = locationEvents.slice(0, numberOfEvents);
-        return this.setState({
-          events: events,
-          currentLocation: location,
-          locations: response.locations,
-        });
+    // Micol: Moved navigator check here, because its not in the componentDidMount for some reason :)
+    if (!navigator.onLine) {
+      this.setState({
+        warningText: "You are offline! Events are loaded from the cache", // Micol: I modified the text
       });
     } else {
-      getEvents().then((res) => {
-        console.log(res)
-        // Persists location filter from state
-        const locationEvents =
-          currentLocation === 'all'
-            ? res
-            : res.filter(
-              (event) => event.location === currentLocation
-            );
-        const locations = extractLocations(locationEvents);
-        const numEvents = eventCount || numberOfEvents;
-        const events = locationEvents.slice(0, numEvents);
-        if (this.mounted) {
-          return this.setState({
-            events: events,
-            numberOfEvents: eventCount,
-            locations,
-          });
-        }
+      this.setState({
+        warningText: '',
       });
     }
+
+    // Micol: If the eventCount is undefined, that means when the user change the city
+    if (eventCount === undefined) {
+      eventCount = this.state.numberOfEvents;
+    } else {
+      this.setState({ numberOfEvents: eventCount })
+    }
+
+    // Micol: If the location is undefined, that means when the user change the numberOfEvents
+    if (location === undefined) {
+      location = this.state.locationSelected;
+    }
+
+    // Micol: Get events and update the state!!!
+    getEvents().then((events) => {
+      let locationEvents = (location === 'all') 
+        ? events : events.filter((event) => event.location === location);
+          this.setState({
+            events: locationEvents.slice(0, eventCount),
+            numberOfEvents: eventCount,
+            locationSelected: location,
+      });
+    });
   };
 
   // Gets total number of events happening in each city
@@ -90,20 +97,37 @@ class App extends Component {
 
   componentWillUnmount() {
     this.mounted = false;
-    console.log('Mount is false')
   }
 
   render() {
-    console.log('This state', this.state)
-    return (
-      <div className="App">
-        <h1>Meet App</h1>
-        <h4>Choose your nearest city</h4>
-        <CitySearch locations={this.state.locations} updateEvents={this.updateEvents} />
-        <NumberOfEvents />
-        <EventList events={this.state.events} />
-      </div>
-    );
+    const { locations, numberOfEvents } = this.state;
+    // Micol: If the showWelcomeScreen is false only then show events otherwise show Welcome Screen
+    if (!this.state.showWelcomeScreen) {
+      return (
+        <div className='App'>
+          <h1 className = 'appTitle'>Meet App</h1>
+          <h5>Upcoming events</h5>
+
+          <CitySearch 
+                      locations={locations} 
+                      updateEvents={this.updateEvents} />
+
+          <NumberOfEvents 
+                      updateEvents={this.updateEvents}
+                      numberOfEvents={numberOfEvents}/>
+                      
+          <div className='warningAlert'>
+            <OfflineAlert text={this.state.warningText} />
+          </div>
+  
+          <EventList events={this.state.events} />
+        </div>
+      )
+    }
+    else {
+        return (<WelcomeScreen showWelcomeScreen={this.state.showWelcomeScreen}
+        getAccessToken={() => { getAccessToken() }} />)
+    }
   }
 
 }
